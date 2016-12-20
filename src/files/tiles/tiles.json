@@ -1,0 +1,27 @@
+[
+  {
+    "id": -1,
+    "name": "transparent",
+    "texture": "/images/tiles/transparent.png"
+  },
+  {
+    "id": 0,
+    "name": "sand",
+    "texture": "/images/tiles/sand.png"
+  },
+  {
+    "id": 1,
+    "name": "water",
+    "texture": "/images/tiles/water.png"
+  },
+  {
+    "id": 2,
+    "name": "cloud",
+    "texture": "/images/tiles/cloud.png"
+  },
+  {
+    "id": 1000,
+    "name": "gnome",
+    "texture": "/images/characters/gnome.png"
+  }
+]

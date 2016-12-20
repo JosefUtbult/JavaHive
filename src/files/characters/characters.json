@@ -1,0 +1,12 @@
+[
+  {
+    "id": 0,
+    "name": "Måns",
+    "tile": 1000,
+    "position": {
+      "x": 3,
+      "y": 2
+    },
+    "dialog": "My life is wunderbar. Who came on the screen?"
+  }
+]
