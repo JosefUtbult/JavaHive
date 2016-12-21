@@ -6,12 +6,19 @@ import core.utils.ObjectCache;
 import java.util.Scanner;
 
 /**
- * Created by August on 2016-12-21.
+ * Loads and caches characters stored on disc.
  */
 public class CharacterStore {
 
+    /**
+     * A constant string that denotes where the characters are stored
+     * on disc.
+     */
     private final static String characterJSONPath = "/files/characters/characters.json";
 
+    /**
+     * A cache for Characters.
+     */
     private final ObjectCache<Character> characters = new ObjectCache<>();
 
     private static class CharacterJSONLoaderHolder{
