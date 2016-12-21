@@ -29,4 +29,8 @@ public class Character {
     private static int getNextId(){
         return nextId++;
     }
+
+    public int getId(){
+        return this.id;
+    }
 }
