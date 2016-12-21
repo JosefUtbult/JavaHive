@@ -55,7 +55,7 @@ public class GameMap implements IGameMap, Renderable {
     }
 
     @Override
-    public IGameMap setCharacters(MapCharacter[] characterss) {
+    public IGameMap setCharacters(MapCharacter[] characters) {
         return null;
     }
 

@@ -25,5 +25,5 @@ public interface IGameMap {
 
     IGameMap setTiles(int[][] layers);
 
-    IGameMap setCharacters(MapCharacter[] characterss);
+    IGameMap setCharacters(MapCharacter[] characters);
 }
