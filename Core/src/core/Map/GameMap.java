@@ -3,6 +3,8 @@ package core.Map;
 import core.Graphic.Renderable;
 import core.Map.jsonTemplates.MapCharacter;
 import core.Objects.RenderableQueue;
+import core.characters.Character;
+import core.characters.CharacterStore;
 import core.tile.GameTile;
 
 import java.awt.*;
@@ -16,22 +18,16 @@ import static core.Constants.Constants.TILESIZE;
  */
 public class GameMap implements IGameMap, Renderable {
 
-    private final GameTile[][] layers;
+    private GameTile[][] layers;
     private final int tilesInWidth;
     private final int tilesInHeight;
+    private Character[] characters;
 
-    public GameMap(int tilesInWidth, int tilesInHeight, int[][] layers) {
+    public GameMap(int tilesInWidth, int tilesInHeight) {
         this.tilesInWidth = tilesInWidth;
         this.tilesInHeight = tilesInHeight;
-        this.layers = Arrays.stream(layers)
-                .map(layer -> Arrays.stream(layer)
-                        .mapToObj(GameTile::byId)
-                        .toArray(GameTile[]::new)
-                )
-                .toArray(GameTile[][]::new);
 
         RenderableQueue.get().addObject(this);
-
     }
 
     @Override
@@ -51,12 +47,25 @@ public class GameMap implements IGameMap, Renderable {
 
     @Override
     public IGameMap setTiles(int[][] layers) {
-        return null;
+        this.layers = Arrays.stream(layers)
+                .map(layer -> Arrays.stream(layer)
+                        .mapToObj(GameTile::byId)
+                        .toArray(GameTile[]::new)
+                )
+                .toArray(GameTile[][]::new);
+
+        return this;
     }
 
     @Override
     public IGameMap setCharacters(MapCharacter[] characters) {
-        return null;
+        this.characters = Arrays.stream(characters)
+                .map(mapCharacter -> CharacterStore.get()
+                        .get(mapCharacter.id)
+                        .setPosition(mapCharacter.position))
+                .toArray(Character[]::new);
+
+        return this;
     }
 
     @Override

@@ -1,20 +1,21 @@
 package core.tile;
 
 import core.Graphic.ImageStore;
+import core.Store.Unique;
 
 import java.awt.*;
 
 /**
  * Created by josef on 2016-12-20.
  */
-public class GameTile {
+public class GameTile implements Unique{
 
     private int id;
     private String name;
     private String texture;
 
     public static GameTile byId(int tileId) {
-        return TileLibrary.getTileById(tileId);
+        return TileLibrary.get().get(tileId);
     }
 
     public static GameTile from(GameTile template) {

@@ -12,7 +12,7 @@ public interface IGameMap {
 
     static IGameMap fromJson(String json) {
         GameMapTemplate template = new Gson().fromJson(json, GameMapTemplate.class);
-        return new GameMap(template.tilesInWidth, template.tilesInHeight, template.layers)
+        return new GameMap(template.tilesInWidth, template.tilesInHeight)
                 .setTiles(template.layers)
                 .setCharacters(template.characters);
     }

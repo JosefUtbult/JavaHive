@@ -1,6 +1,8 @@
 package core.tile;
 
 import com.google.gson.Gson;
+import core.Objects.Tile;
+import core.Store.CachedStore;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -10,7 +12,9 @@ import java.util.Scanner;
 /**
  * Created by josef on 2016-12-20.
  */
-public class TileLibrary {
+public class TileLibrary extends CachedStore<GameTile>{
+
+    private static final String tileJSONFilePath = "/files/tiles/tiles.json";
 
     private static class TileLibraryHolder {
         public final static TileLibrary instance = new TileLibrary();
@@ -21,21 +25,15 @@ public class TileLibrary {
     }
 
     private TileLibrary() {
-        String tempString = new Scanner(getClass().getResourceAsStream("/files/tiles/tiles.json")).useDelimiter("\\Z").next();
-        GameTile[] tiles = new Gson().fromJson(tempString, GameTile[].class);
-
-        Arrays.stream(tiles)
-                .forEach(gameTile -> this.tiles.put(gameTile.getId(), gameTile));
+        super(tileJSONFilePath);
     }
 
-    public static GameTile getTileById(int id) {
-        return get().newTileFromTileId(id);
-    }
-
-    private Map<Integer, GameTile> tiles = new HashMap<>();
-
-    public GameTile newTileFromTileId(int id) {
-        return GameTile.from(tiles.get(id));
+    @Override
+    public GameTile[] convertObjects(String discData) {
+        return new Gson().fromJson(
+                discData,
+                GameTile[].class
+        );
     }
 
 }
