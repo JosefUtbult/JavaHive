@@ -14,7 +14,7 @@ public class Character implements Unique{
     private final int id;
     private String name;
     private int tile;
-    private Point position;
+    private Point position = new Point(0,0);
 
     private String dialog = "Hello, world!";
 
@@ -59,7 +59,8 @@ public class Character implements Unique{
     }
 
     public GameTile getTile() {
-        return GameTile.byId(this.tile);
+        return GameTile.byId(this.tile)
+                .setPosition(this.getPosition());
     }
 
     public int getTileId(){

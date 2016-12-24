@@ -5,7 +5,7 @@ package core.Map.jsonTemplates;
  */
 public class GameMapTemplate {
 
-    public int[][] layers;
+    public TileLayerTemplate[] layers;
     public MapCharacter[] characters;
     public int tilesInWidth;
     public int tilesInHeight;

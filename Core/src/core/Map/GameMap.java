@@ -2,18 +2,17 @@ package core.Map;
 
 import core.Graphic.Renderable;
 import core.Map.jsonTemplates.MapCharacter;
+import core.Map.jsonTemplates.TileLayerTemplate;
 import core.Objects.RenderableQueue;
 import core.characters.Character;
 import core.characters.CharacterStore;
 import core.tile.GameTile;
+import core.tile.TileLayer;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static core.Constants.Constants.PIXELSIZE;
-import static core.Constants.Constants.TILESIZE;
 
 /**
  * Created by josef on 2016-12-20.
@@ -24,6 +23,7 @@ public class GameMap implements IGameMap, Renderable {
     private final int tilesInHeight;
     private Character[] characters;
 
+    private List<TileLayer> layers;
     private List<List<GameTile>> tileLayers;
 
     public GameMap(int tilesInWidth, int tilesInHeight) {
@@ -50,13 +50,12 @@ public class GameMap implements IGameMap, Renderable {
     }
 
     @Override
-    public IGameMap setTiles(int[][] layers) {
-        List<List<GameTile>> finalLayers = new ArrayList<>();
+    public IGameMap setTiles(TileLayerTemplate[] layers) {
+        List<TileLayer> finalLayers = new ArrayList<>();
 
-        for(int layer = 0; layer < layers.length; layer++){
-            List<GameTile> tiles = new ArrayList<>();
-            System.out.println("\nLayer " + layer);
-            for(int tileIndex = 0; tileIndex < layers[layer].length; tileIndex++){
+        for(TileLayerTemplate tileLayerTemplate : layers){
+            TileLayer newLayer = new TileLayer(tileLayerTemplate.zIndex);
+            for(int tileIndex = 0; tileIndex < tileLayerTemplate.tiles.length; tileIndex++){
                 Point point =
                         new Point(
                                 tileIndex%tilesInWidth,
@@ -64,18 +63,19 @@ public class GameMap implements IGameMap, Renderable {
                         );
 
 
-                System.out.print("[index:"+tileIndex+", tileIndex: " + layers[layer][tileIndex] + ", x:"+point.x+", y:"+point.y+"]");
-                tiles.add(
+                System.out.print("[index:"+tileIndex+", tileIndex: " + tileLayerTemplate.tiles[tileIndex] + ", x:"+point.x+", y:"+point.y+"]");
+                newLayer.add(
                         GameTile
-                            .byId(layers[layer][tileIndex])
-                            .setPosition(point)
+                                .byId(tileLayerTemplate.tiles[tileIndex])
+                                .setPosition(point)
                 );
             }
 
-            finalLayers.add(tiles);
+            finalLayers.add(newLayer);
         }
 
-        this.tileLayers = finalLayers;
+        this.layers = finalLayers;
+
         return this;
     }
 
@@ -94,13 +94,27 @@ public class GameMap implements IGameMap, Renderable {
     public void render(Graphics g) {
         System.out.println("hello");
 
-        for (List<GameTile> tileLayer : tileLayers) {
-            System.out.println("NEW LAYER");
-            for (GameTile gameTile : tileLayer) {
-                gameTile.render(g);
+        List<GameTile> renderQueue = new ArrayList<>();
+
+        for(int layerIndex = 0; layerIndex < layers.size(); layerIndex++){
+            for(int tileIndex = 0; tileIndex < layers.get(layerIndex).size(); tileIndex++){
+                int x = tileIndex%tilesInWidth;
+                int y = (int)Math.floor(tileIndex/tilesInWidth);
+
+                for(Character character : characters){
+                    System.out.println(character.getPosition());
+                    if(character.getPosition().x == x && character.getPosition().y == y) {
+                        renderQueue.add(character.getTile());
+                        System.out.println("Adding character to queue.");
+                    }
+                    else
+                        renderQueue.add(layers.get(layerIndex).get(tileIndex));
+                }
             }
         }
 
-       //Arrays.stream(characters).forEach(character -> character.getTile().render(g));
+        for(GameTile tile : renderQueue)
+            tile.render(g);
+        //Arrays.stream(characters).forEach(character -> character.getTile().render(g));
     }
 }

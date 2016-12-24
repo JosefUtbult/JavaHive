@@ -3,6 +3,7 @@ package core.Map;
 import com.google.gson.Gson;
 import core.Map.jsonTemplates.GameMapTemplate;
 import core.Map.jsonTemplates.MapCharacter;
+import core.Map.jsonTemplates.TileLayerTemplate;
 import core.tile.GameTile;
 
 /**
@@ -23,7 +24,7 @@ public interface IGameMap {
 
     GameTile[][] getTiles();
 
-    IGameMap setTiles(int[][] layers);
+    IGameMap setTiles(TileLayerTemplate[] layers);
 
     IGameMap setCharacters(MapCharacter[] characters);
 }
