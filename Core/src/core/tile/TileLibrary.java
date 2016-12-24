@@ -36,6 +36,11 @@ public class TileLibrary extends CachedStore<GameTile>{
         );
     }
 
+    @Override
+    public GameTile get(int tileId){
+        return GameTile.from(super.get(tileId));
+    }
+
 }
 
 
