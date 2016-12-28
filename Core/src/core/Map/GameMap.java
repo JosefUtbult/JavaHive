@@ -105,7 +105,7 @@ public class GameMap implements IGameMap, Renderable {
                     System.out.println(character.getPosition());
                     if(character.getPosition().x == x && character.getPosition().y == y) {
                         renderQueue.add(character.getTile());
-                        System.out.println("Adding character to queue.");
+                        System.out.println("Adding character to queue. " + character.getPosition());
                     }
                     else
                         renderQueue.add(layers.get(layerIndex).get(tileIndex));
