@@ -13,6 +13,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by josef on 2016-12-20.
@@ -92,29 +93,20 @@ public class GameMap implements IGameMap, Renderable {
 
     @Override
     public void render(Graphics g) {
-        System.out.println("hello");
+        List<TileLayer> renderLayers = new ArrayList<>();
+        renderLayers.addAll(layers);
+        renderLayers.add(
+                new TileLayer(
+                        2,
+                        Arrays.stream(characters)
+                                .map(character -> character.getTile())
+                                .collect(Collectors.toList())
+                )
+        );
 
-        List<GameTile> renderQueue = new ArrayList<>();
+        renderLayers.sort((o1, o2) -> o1.getZIndex() - o2.getZIndex());
 
-        for(int layerIndex = 0; layerIndex < layers.size(); layerIndex++){
-            for(int tileIndex = 0; tileIndex < layers.get(layerIndex).size(); tileIndex++){
-                int x = tileIndex%tilesInWidth;
-                int y = (int)Math.floor(tileIndex/tilesInWidth);
-
-                for(Character character : characters){
-                    System.out.println(character.getPosition());
-                    if(character.getPosition().x == x && character.getPosition().y == y) {
-                        renderQueue.add(character.getTile());
-                        System.out.println("Adding character to queue. " + character.getPosition());
-                    }
-                    else
-                        renderQueue.add(layers.get(layerIndex).get(tileIndex));
-                }
-            }
-        }
-
-        for(GameTile tile : renderQueue)
-            tile.render(g);
-        //Arrays.stream(characters).forEach(character -> character.getTile().render(g));
+        for(TileLayer layer : renderLayers)
+            layer.forEach(gameTile -> gameTile.render(g));
     }
 }

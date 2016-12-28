@@ -18,10 +18,16 @@ public class TileLayer implements List<GameTile> {
         this.zIndex = zIndex;
     }
 
+    public TileLayer(int zIndex, List<GameTile> tiles){
+        this(zIndex);
+        this.addAll(tiles);
+
+    }
+
+    public int getZIndex(){
+        return zIndex;
+    }
     /**
-     * Get list size.
-     * Get list size.
-     * Get list size.
      * Get list size.
      * @return
      */
